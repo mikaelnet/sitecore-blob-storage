@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stendahls.Sc.BlobStorage", "Stendahls.Sc.BlobStorage\Stendahls.Sc.BlobStorage.csproj", "{7D5BBD90-F343-459D-8128-086B504675F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stendahls.Sc.BlobStorage.Common", "Stendahls.Sc.BlobStorage.Common\Stendahls.Sc.BlobStorage.Common.csproj", "{445CECFC-03F1-4C8B-8511-73AD3AC5090B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stendahls.Sc.BlobStorage.AwsS3", "Stendahls.Sc.BlobStorage.AwsS3\Stendahls.Sc.BlobStorage.AwsS3.csproj", "{126C8B2A-B38A-47F2-81EB-6DD48113DE47}"
+EndProject
+Project("{CAA73BB0-EF22-4D79-A57E-DF67B3BA9C80}") = "Stendahls.Sc.BlobStorage.TDS.Core", "Stendahls.Sc.BlobStorage.TDS.Core\Stendahls.Sc.BlobStorage.TDS.Core.scproj", "{FF620D14-1748-4C73-A0B0-1D6E3B727714}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3B3260E2-D931-47BB-AC7A-BE3B299002F8}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7D5BBD90-F343-459D-8128-086B504675F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D5BBD90-F343-459D-8128-086B504675F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D5BBD90-F343-459D-8128-086B504675F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D5BBD90-F343-459D-8128-086B504675F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{445CECFC-03F1-4C8B-8511-73AD3AC5090B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{445CECFC-03F1-4C8B-8511-73AD3AC5090B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{445CECFC-03F1-4C8B-8511-73AD3AC5090B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{445CECFC-03F1-4C8B-8511-73AD3AC5090B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{126C8B2A-B38A-47F2-81EB-6DD48113DE47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{126C8B2A-B38A-47F2-81EB-6DD48113DE47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{126C8B2A-B38A-47F2-81EB-6DD48113DE47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{126C8B2A-B38A-47F2-81EB-6DD48113DE47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF620D14-1748-4C73-A0B0-1D6E3B727714}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF620D14-1748-4C73-A0B0-1D6E3B727714}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF620D14-1748-4C73-A0B0-1D6E3B727714}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{FF620D14-1748-4C73-A0B0-1D6E3B727714}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF620D14-1748-4C73-A0B0-1D6E3B727714}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF620D14-1748-4C73-A0B0-1D6E3B727714}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
