@@ -1,0 +1,85 @@
+<project site="sc81u1.local" format="Zip Package" targetfilefolder="wwwroot">
+  <Metadata>
+    <metadata>
+      <PackageName>Stendahls.BlobStorage</PackageName>
+      <Author>Mikael Högberg</Author>
+      <Version>1.0.0</Version>
+      <Revision />
+      <License />
+      <Comment />
+      <Attributes />
+      <Readme>For the package to work you need to configure a cloud storage and update the example config file accordingly.
+</Readme>
+      <Publisher>Stendahls</Publisher>
+      <PostStep />
+      <PackageID />
+    </metadata>
+  </Metadata>
+  <SaveProject>True</SaveProject>
+  <Sources>
+    <xitems>
+      <Entries>
+        <x-item>/core/sitecore/content/Applications/Content Editor/Ribbons/Chunks/Blobs/{474CB135-3CA4-4A3E-9317-19C4A749E284}/invariant/0</x-item>
+        <x-item>/core/sitecore/content/Applications/Content Editor/Ribbons/Chunks/Blobs/Send to Cloud/{2875C437-87F4-4363-A3F4-6EA4F0B4C6CB}/invariant/0</x-item>
+        <x-item>/core/sitecore/content/Applications/Content Editor/Ribbons/Chunks/Blobs/Restore from Cloud/{78A2F8F7-554D-494D-87C0-0641E73EA36B}/invariant/0</x-item>
+        <x-item>/core/sitecore/content/Applications/Content Editor/Ribbons/Strips/Developer/{1756C7EE-5F3A-4F62-83E4-586F0BE185D1}/invariant/0</x-item>
+      </Entries>
+      <SkipVersions>False</SkipVersions>
+      <Converter>
+        <ItemToEntryConverter>
+          <Transforms>
+            <InstallerConfigurationTransform>
+              <Options>
+                <BehaviourOptions>
+                  <ItemMode>Undefined</ItemMode>
+                  <ItemMergeMode>Undefined</ItemMergeMode>
+                </BehaviourOptions>
+              </Options>
+            </InstallerConfigurationTransform>
+          </Transforms>
+        </ItemToEntryConverter>
+      </Converter>
+      <Include />
+      <Exclude />
+      <Name>Items</Name>
+    </xitems>
+    <xfiles>
+      <Entries>
+        <x-item>/bin/Stendahls.Sc.BlobStorage.dll</x-item>
+        <x-item>/bin/Stendahls.Sc.BlobStorage.Common.dll</x-item>
+        <x-item>/bin/Stendahls.Sc.BlobStorage.AwsS3.dll</x-item>
+        <x-item>/bin/AWSSDK.Core.dll</x-item>
+        <x-item>/bin/AWSSDK.S3.dll</x-item>
+        <x-item>/App_Config/Include/Stendahls/BlobStorage.config</x-item>
+        <x-item>/App_Config/Include/zzz/BlobStorage.AwsS3.Credentials.example</x-item>
+        <x-item>/App_Config/Include/zzz/BlobStorage.DiskCache.example</x-item>
+      </Entries>
+      <Converter>
+        <FileToEntryConverter>
+          <Root />
+          <Transforms>
+            <InstallerConfigurationTransform>
+              <Options>
+                <BehaviourOptions>
+                  <ItemMode>Undefined</ItemMode>
+                  <ItemMergeMode>Undefined</ItemMergeMode>
+                </BehaviourOptions>
+              </Options>
+            </InstallerConfigurationTransform>
+          </Transforms>
+        </FileToEntryConverter>
+      </Converter>
+      <Include />
+      <Exclude />
+      <Name>Files</Name>
+    </xfiles>
+  </Sources>
+  <Converter>
+    <TrivialConverter>
+      <Transforms />
+    </TrivialConverter>
+  </Converter>
+  <Include />
+  <Exclude />
+  <Name />
+</project>

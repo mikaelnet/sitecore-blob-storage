@@ -15,25 +15,54 @@ namespace Stendahls.Sc.BlobStorage
     {
         private readonly LockSet _blobLockSet;
         private readonly IBlobManager _blobManager;
+        private readonly bool _configured;
 
         internal static string BlobManagerType => Settings.GetSetting("Stendahls.BlobStorage.Provider");
 
         public SqlServerWithExternalBlobDataProvider(string connectionString) : base(connectionString)
         {
             _blobLockSet = new LockSet();
-            
-            Log.Info($"Initializing ExternalBlobDataProvider using {BlobManagerType}", this);
-            _blobManager = ReflectionUtil.CreateObject(BlobManagerType) as IBlobManager;
+
+            if (string.IsNullOrWhiteSpace(BlobManagerType))
+            {
+                Log.Error("ExternalBlobDataProvider not configured. Using Sitecore default.", this);
+                _configured = false;
+                return;
+            }
+            try
+            {
+                Log.Info($"Initializing ExternalBlobDataProvider using {BlobManagerType}", this);
+                _blobManager = ReflectionUtil.CreateObject(BlobManagerType) as IBlobManager;
+                if (_blobManager == null)
+                {
+                    Log.Error($"Unable to create IBlobManager of type {BlobManagerType}. Using Sitecore default.", this);
+                    _configured = false;
+                    return;
+                }
+                _blobManager.Initialize();
+                _configured = true;
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Unable to initialize ExternalBlobDataProvider {BlobManagerType}. Using Sitecore default", ex, this);
+                _configured = false;
+            }
         }
 
         public override Stream GetBlobStream(Guid blobId, CallContext context)
         {
+            if (!_configured)
+                return base.GetBlobStream(blobId, context);
+
             var stream = _blobManager.DownloadToStream(blobId);
             return stream ?? base.GetBlobStream(blobId, context);
         }
 
         public override bool SetBlobStream(Stream stream, Guid blobId, CallContext context)
         {
+            if (!_configured)
+                return base.SetBlobStream(stream, blobId, context);
+
             lock (_blobLockSet.GetLock(blobId.ToString()))
             {
                 _blobManager.UploadFromStream(blobId, stream);
@@ -62,15 +91,21 @@ namespace Stendahls.Sc.BlobStorage
 
         public override bool RemoveBlobStream(Guid blobId, CallContext context)
         {
-            _blobManager.Delete(blobId);
+            if (_configured)
+            {
+                _blobManager.Delete(blobId);
+            }
             return base.RemoveBlobStream(blobId, context);
         }
 
         public override bool BlobStreamExists(Guid blobId, CallContext context)
         {
-            // Transfer if not exists
-            if (_blobManager.Exists(blobId))
-                return true;
+            if (_configured)
+            {
+                // Transfer if not exists
+                if (_blobManager.Exists(blobId))
+                    return true;
+            }
             return base.BlobStreamExists(blobId, context);
         }
 
@@ -78,8 +113,11 @@ namespace Stendahls.Sc.BlobStorage
         {
             // Let Sitecore cleanup the blobs table first
             base.CleanupBlobs(context);
-            // Then cleanup the blob storage to match the blobs tables
-            _blobManager.CleanupBlobs(context);
+            if (_configured)
+            {
+                // Then cleanup the blob storage to match the blobs tables
+                _blobManager.CleanupBlobs(context);
+            }
         }
     }
 }

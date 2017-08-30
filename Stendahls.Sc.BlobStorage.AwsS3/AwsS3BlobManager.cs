@@ -15,55 +15,34 @@ namespace Stendahls.Sc.BlobStorage.AwsS3
 {
     public class AwsS3BlobManager : DiskCachingBlobManager
     {
-        private string _bucketName;
-        private string BucketName
-        {
-            get
-            {
-                if (_bucketName != null)
-                    return _bucketName;
-                _bucketName = Settings.GetSetting("Stendahls.BlobStorage.AwsS3.BucketName");
-                if (!string.IsNullOrWhiteSpace(_bucketName))
-                    return _bucketName;
-                throw new ConfigurationException("Stendahls.BlobStorage.AwsS3.BucketName is not defined in config");
-            }
-        }
-
-        private RegionEndpoint _region;
-        private RegionEndpoint Region
-        {
-            get
-            {
-                if (_region != null)
-                    return _region;
-                var regionName = Settings.GetSetting("Stendahls.BlobStorage.AwsS3.Region");
-                if (string.IsNullOrWhiteSpace(regionName))
-                    throw new ConfigurationException("Stendahls.BlobStorage.AwsS3.Region is not defined in config");
-                _region = RegionEndpoint.GetBySystemName(regionName);
-                return _region;
-            }
-        }
-
-        private AWSCredentials _credentials;
-        private AWSCredentials Credentials
-        {
-            get
-            {
-                if (_credentials != null)
-                    return _credentials;
-
-                var accessKey = Settings.GetSetting("Stendahls.BlobStorage.AwsS3.AccessKey");
-                var secretKey = Settings.GetSetting("Stendahls.BlobStorage.AwsS3.SecretKey");
-                if (string.IsNullOrWhiteSpace(accessKey) || string.IsNullOrWhiteSpace(secretKey))
-                    throw new ConfigurationException("Stendahls.BlobStorage.AwsS3.AccessKey and/or Stendahls.BlobStorage.AwsS3.SecretKey is not defined in config");
-                _credentials = new BasicAWSCredentials(accessKey, secretKey);
-                return _credentials;
-            }
-        }
-
-        private static string BucketPrefix => Settings.GetSetting("Stendahls.BlobStorage.AwsS3.Prefix");
-
         private static readonly LockSet BlobLockSet = new LockSet();
+        public string BucketName { get; protected set; }
+        public RegionEndpoint Region { get; protected set; }
+        protected AWSCredentials Credentials { private get; set; }
+        public static string BucketPrefix { get; protected set; }
+
+        public override void Initialize()
+        {
+            base.Initialize();
+
+            var bucketName = Settings.GetSetting("Stendahls.BlobStorage.AwsS3.BucketName");
+            if (string.IsNullOrWhiteSpace(bucketName))
+                throw new ConfigurationException("Stendahls.BlobStorage.AwsS3.BucketName is not defined in config");
+            BucketName = bucketName;
+
+            var regionName = Settings.GetSetting("Stendahls.BlobStorage.AwsS3.Region");
+            if (string.IsNullOrWhiteSpace(regionName))
+                throw new ConfigurationException("Stendahls.BlobStorage.AwsS3.Region is not defined in config");
+            Region = RegionEndpoint.GetBySystemName(regionName);
+
+            var accessKey = Settings.GetSetting("Stendahls.BlobStorage.AwsS3.AccessKey");
+            var secretKey = Settings.GetSetting("Stendahls.BlobStorage.AwsS3.SecretKey");
+            if (string.IsNullOrWhiteSpace(accessKey) || string.IsNullOrWhiteSpace(secretKey))
+                throw new ConfigurationException("Stendahls.BlobStorage.AwsS3.AccessKey and/or Stendahls.BlobStorage.AwsS3.SecretKey is not defined in config");
+            Credentials = new BasicAWSCredentials(accessKey, secretKey);
+
+            BucketPrefix = Settings.GetSetting("Stendahls.BlobStorage.AwsS3.Prefix");
+        }
 
         protected static string GetObjectKey(Guid blobId)
         {

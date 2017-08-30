@@ -4,9 +4,10 @@ using System.Configuration;
 using Sitecore.Configuration;
 using Sitecore.Data;
 using Sitecore.Diagnostics;
+using Sitecore.Reflection;
 using Sitecore.Shell.Framework.Commands;
 using Sitecore.Web.UI.Sheer;
-using Stendahls.Sc.BlobStorage.AwsS3;
+using Stendahls.Sc.BlobStorage.Common;
 
 namespace Stendahls.Sc.BlobStorage
 {
@@ -42,7 +43,8 @@ namespace Stendahls.Sc.BlobStorage
             var conStringName = database.ConnectionStringName;
             var conString = ConfigurationManager.ConnectionStrings[conStringName].ConnectionString;
 
-            var transferer = new BlobTransferer(conString, new AwsS3BlobManager());
+            var blobManager = ReflectionUtil.CreateObject(SqlServerWithExternalBlobDataProvider.BlobManagerType) as IBlobManager;
+            var transferer = new BlobTransferer(conString, blobManager);
             var numberOfBlobs = transferer.GetNumberOfDatabaseBlobs();
             progressStatus.Total = numberOfBlobs;
             progressStatus.Processed = 0;

@@ -6,6 +6,7 @@ namespace Stendahls.Sc.BlobStorage.Common
 {
     public interface IBlobManager
     {
+        void Initialize();
         Stream DownloadToStream(Guid blobId);
         bool UploadFromStream(Guid blobId, Stream stream);
         bool Delete(Guid blobId);

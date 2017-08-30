@@ -68,10 +68,6 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Stendahls.Sc.BlobStorage.AwsS3\Stendahls.Sc.BlobStorage.AwsS3.csproj">
-      <Project>{126c8b2a-b38a-47f2-81eb-6dd48113de47}</Project>
-      <Name>Stendahls.Sc.BlobStorage.AwsS3</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Stendahls.Sc.BlobStorage.Common\Stendahls.Sc.BlobStorage.Common.csproj">
       <Project>{445cecfc-03f1-4c8b-8511-73ad3ac5090b}</Project>
       <Name>Stendahls.Sc.BlobStorage.Common</Name>
