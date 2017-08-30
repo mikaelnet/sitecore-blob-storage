@@ -65,7 +65,7 @@
     <Compile Include="UploadBlobsCommand.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Stendahls.Sc.BlobStorage.Common\Stendahls.Sc.BlobStorage.Common.csproj">
