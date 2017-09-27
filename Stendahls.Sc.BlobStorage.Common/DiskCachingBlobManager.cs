@@ -18,7 +18,7 @@ namespace Stendahls.Sc.BlobStorage.Common
     public abstract class DiskCachingBlobManager : IBlobManager
     {
         private static string CacheFolder { get; set; }
-
+        
         private static readonly LockSet BlobLockSet = new LockSet();
 
         protected static string GetFilePath(Guid blobId)
@@ -30,12 +30,7 @@ namespace Stendahls.Sc.BlobStorage.Common
 
         public virtual void Initialize()
         {
-            var cacheFolder = Settings.GetSetting("Stendahls.BlobStorage.DiskCache.Folder");
-            if (string.IsNullOrWhiteSpace(cacheFolder))
-            {
-                cacheFolder = Path.Combine(Settings.DataFolder, "BlobCache");
-            }
-            CacheFolder = cacheFolder;
+            CacheFolder = Settings.GetSetting("Stendahls.BlobStorage.DiskCache.Folder");
         }
 
         public virtual Stream DownloadToStream(Guid blobId)

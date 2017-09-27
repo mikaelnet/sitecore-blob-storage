@@ -3,7 +3,12 @@
   <sitecore>
     <settings>
       <setting name="Stendahls.BlobStorage.DiskCache.Folder" value="C:\Temp\BlobCache" />
-      <setting name="Stendahls.BlobStorage.Databases" value="master,web,core" />
+      <setting name="Stendahls.BlobStorage.Databases" value="master,web" />
     </settings>
+    <scheduling>
+      <agent type="Stendahls.Sc.BlobStorage.Common.DiskCachingCleanupAgent" method="Run" interval="1.00:00:00">
+        <param desc="max disk cache size">100MB</param>
+      </agent>
+    </scheduling>
   </sitecore>
 </configuration>
