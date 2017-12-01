@@ -44,7 +44,9 @@ namespace Stendahls.Sc.BlobStorage.Cms.Commands
             var conStringName = database.ConnectionStringName;
             var conString = ConfigurationManager.ConnectionStrings[conStringName].ConnectionString;
 
-            var blobManager = ReflectionUtil.CreateObject(BlobManagerHelper.BlobManagerType) as IBlobManager;
+            var blobManager = (IBlobManager)ReflectionUtil.CreateObject(BlobManagerHelper.BlobManagerType);
+            blobManager.Initialize();
+
             var transferer = new BlobTransferer(conString, blobManager);
             var numberOfBlobs = transferer.GetNumberOfCloudBlobs();
             progressStatus.Total =numberOfBlobs;

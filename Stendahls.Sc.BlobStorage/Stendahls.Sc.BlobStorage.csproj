@@ -61,9 +61,7 @@
   <ItemGroup>
     <Compile Include="BlobTransferer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RestoreBlobsCommand.cs" />
     <Compile Include="SqlServerWithExternalBlobDataProvider.cs" />
-    <Compile Include="UploadBlobsCommand.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
