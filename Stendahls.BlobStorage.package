@@ -3,7 +3,7 @@
     <metadata>
       <PackageName>Stendahls.BlobStorage</PackageName>
       <Author>Mikael Högberg</Author>
-      <Version>1.0.0</Version>
+      <Version>1.1.0</Version>
       <Revision />
       <License />
       <Comment />
@@ -47,10 +47,12 @@
       <Entries>
         <x-item>/bin/Stendahls.Sc.BlobStorage.dll</x-item>
         <x-item>/bin/Stendahls.Sc.BlobStorage.Common.dll</x-item>
+        <x-item>/bin/Stendahls.Sc.BlobStorage.Cms.dll</x-item>
         <x-item>/bin/Stendahls.Sc.BlobStorage.AwsS3.dll</x-item>
         <x-item>/bin/AWSSDK.Core.dll</x-item>
         <x-item>/bin/AWSSDK.S3.dll</x-item>
         <x-item>/App_Config/Include/Stendahls/BlobStorage.config</x-item>
+        <x-item>/App_Config/Include/Stendahls/BlobStorage.Cms.config</x-item>
         <x-item>/App_Config/Include/zzz/BlobStorage.AwsS3.Credentials.example</x-item>
         <x-item>/App_Config/Include/zzz/BlobStorage.DiskCache.example</x-item>
       </Entries>
