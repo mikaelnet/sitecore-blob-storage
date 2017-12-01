@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -11,7 +10,6 @@ using Sitecore.Configuration;
 using Sitecore.Data;
 using Sitecore.Data.DataProviders;
 using Sitecore.Diagnostics;
-using Sitecore.IO;
 
 namespace Stendahls.Sc.BlobStorage.Common
 {

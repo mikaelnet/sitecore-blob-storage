@@ -17,13 +17,11 @@ namespace Stendahls.Sc.BlobStorage
         private readonly IBlobManager _blobManager;
         private readonly bool _configured;
 
-        internal static string BlobManagerType => Settings.GetSetting("Stendahls.BlobStorage.Provider");
-
         public SqlServerWithExternalBlobDataProvider(string connectionString) : base(connectionString)
         {
             _blobLockSet = new LockSet();
 
-            if (string.IsNullOrWhiteSpace(BlobManagerType))
+            if (string.IsNullOrWhiteSpace(BlobManagerHelper.BlobManagerType))
             {
                 Log.Error("ExternalBlobDataProvider not configured. Using Sitecore default.", this);
                 _configured = false;
@@ -31,11 +29,11 @@ namespace Stendahls.Sc.BlobStorage
             }
             try
             {
-                Log.Info($"Initializing ExternalBlobDataProvider using {BlobManagerType}", this);
-                _blobManager = ReflectionUtil.CreateObject(BlobManagerType) as IBlobManager;
+                Log.Info($"Initializing ExternalBlobDataProvider using {BlobManagerHelper.BlobManagerType}", this);
+                _blobManager = ReflectionUtil.CreateObject(BlobManagerHelper.BlobManagerType) as IBlobManager;
                 if (_blobManager == null)
                 {
-                    Log.Error($"Unable to create IBlobManager of type {BlobManagerType}. Using Sitecore default.", this);
+                    Log.Error($"Unable to create IBlobManager of type {BlobManagerHelper.BlobManagerType}. Using Sitecore default.", this);
                     _configured = false;
                     return;
                 }
@@ -44,7 +42,7 @@ namespace Stendahls.Sc.BlobStorage
             }
             catch (Exception ex)
             {
-                Log.Error($"Unable to initialize ExternalBlobDataProvider {BlobManagerType}. Using Sitecore default", ex, this);
+                Log.Error($"Unable to initialize ExternalBlobDataProvider {BlobManagerHelper.BlobManagerType}. Using Sitecore default", ex, this);
                 _configured = false;
             }
         }

@@ -6,9 +6,6 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>ff620d14-1748-4c73-a0b0-1d6e3b727714</ProjectGuid>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
-    <SourceWebPhysicalPath>..\Stendahls.Sc.BlobStorage</SourceWebPhysicalPath>
-    <SourceWebProject>{7d5bbd90-f343-459d-8128-086b504675f7}|Stendahls.Sc.BlobStorage\Stendahls.Sc.BlobStorage.csproj</SourceWebProject>
-    <SourceWebVirtualPath>/Stendahls.Sc.BlobStorage.csproj</SourceWebVirtualPath>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <EnableUpdateable>true</EnableUpdateable>
     <UseMerge>true</UseMerge>
@@ -47,15 +44,6 @@
     <AssemblyAttributes Include="AssemblyVersion">
       <Value>$(AssemblyVersion)</Value>
     </AssemblyAttributes>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Stendahls.Sc.BlobStorage\Stendahls.Sc.BlobStorage.csproj">
-      <Project>{7d5bbd90-f343-459d-8128-086b504675f7}</Project>
-      <Name>Stendahls.Sc.BlobStorage</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ExcludedAssemblies Include="Sitecore.%2a.dll" />
   </ItemGroup>
   <ItemGroup>
     <SitecoreItem Include="sitecore\content.item">
@@ -102,6 +90,32 @@
       <ItemDeployment>AlwaysUpdate</ItemDeployment>
       <ChildItemSynchronization>KeepAllChildrenSynchronized</ChildItemSynchronization>
     </SitecoreItem>
+  </ItemGroup>
+  <ItemGroup>
+    <SourceWebProjects Include="{7d5bbd90-f343-459d-8128-086b504675f7}|Stendahls.Sc.BlobStorage\Stendahls.Sc.BlobStorage.csproj">
+      <SourceWebPhysicalPath>..\Stendahls.Sc.BlobStorage</SourceWebPhysicalPath>
+      <SourceWebVirtualPath>/Stendahls.Sc.BlobStorage.csproj</SourceWebVirtualPath>
+      <SourceWebProjectId>7d5bbd90-f343-459d-8128-086b504675f7</SourceWebProjectId>
+    </SourceWebProjects>
+    <SourceWebProjects Include="{b4540574-50e6-4a58-9e5f-7e8a89ab5dc2}|Stendahls.Sc.BlobStorage.Cms\Stendahls.Sc.BlobStorage.Cms.csproj">
+      <SourceWebPhysicalPath>..\Stendahls.Sc.BlobStorage.Cms</SourceWebPhysicalPath>
+      <SourceWebVirtualPath>/Stendahls.Sc.BlobStorage.Cms.csproj</SourceWebVirtualPath>
+      <SourceWebProjectId>b4540574-50e6-4a58-9e5f-7e8a89ab5dc2</SourceWebProjectId>
+    </SourceWebProjects>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Stendahls.Sc.BlobStorage.Cms\Stendahls.Sc.BlobStorage.Cms.csproj">
+      <Project>{b4540574-50e6-4a58-9e5f-7e8a89ab5dc2}</Project>
+      <Name>Stendahls.Sc.BlobStorage.Cms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Stendahls.Sc.BlobStorage\Stendahls.Sc.BlobStorage.csproj">
+      <Project>{7d5bbd90-f343-459d-8128-086b504675f7}</Project>
+      <Name>Stendahls.Sc.BlobStorage</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ExcludedAssemblies Include="Newtonsoft%2a.dll" />
+    <ExcludedAssemblies Include="Sitecore.%2a.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\HedgehogDevelopment\SitecoreProject\v9.0\HedgehogDevelopment.SitecoreProject.targets" Condition="Exists('$(MSBuildExtensionsPath)\HedgehogDevelopment\SitecoreProject\v9.0\HedgehogDevelopment.SitecoreProject.targets')" />
 </Project>

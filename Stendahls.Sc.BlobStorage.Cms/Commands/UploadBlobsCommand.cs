@@ -1,5 +1,4 @@
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Collections.Specialized;
 using System.Configuration;
 using Sitecore.Configuration;
@@ -10,9 +9,9 @@ using Sitecore.Shell.Framework.Commands;
 using Sitecore.Web.UI.Sheer;
 using Stendahls.Sc.BlobStorage.Common;
 
-namespace Stendahls.Sc.BlobStorage
+namespace Stendahls.Sc.BlobStorage.Cms.Commands
 {
-    public class RestoreBlobsCommand : Command
+    public class UploadBlobsCommand : Command
     {
         public override void Execute(CommandContext context)
         {
@@ -25,11 +24,11 @@ namespace Stendahls.Sc.BlobStorage
 
         protected virtual void Run(ClientPipelineArgs args)
         {
-            Assert.ArgumentNotNull(args, "args");
+            Assert.ArgumentNotNull((object)args, "args");
             var db = Factory.GetDatabase(args.Parameters["db"]);
 
             Sitecore.Shell.Applications.Dialogs.ProgressBoxes.ProgressBox
-                .Execute("Restore blobs", "Restoring Blobs from Cloud",
+                .Execute("Transfer blobs", "Sending Blobs to Cloud",
                     StartProcess, new object[] { db });
         }
 
@@ -46,17 +45,19 @@ namespace Stendahls.Sc.BlobStorage
 
             var blobManager = ReflectionUtil.CreateObject(BlobManagerHelper.BlobManagerType) as IBlobManager;
             var transferer = new BlobTransferer(conString, blobManager);
-            var numberOfBlobs = transferer.GetNumberOfCloudBlobs();
-            progressStatus.Total =numberOfBlobs;
+            var numberOfBlobs = transferer.GetNumberOfDatabaseBlobs();
+            progressStatus.Total = numberOfBlobs;
             progressStatus.Processed = 0;
+            progressStatus.Messages.Add($"Uploading blob 1 to {progressStatus.Total} out of {numberOfBlobs} blobs");
 
-            var blobs = transferer.GetBlobIds(true);
+            var blobs = transferer.GetBlobIds();
             foreach (var blobId in blobs)
             {
-                transferer.RestoreFromBlobManager(blobId);
+                transferer.TransferToBlobManager(blobId);
                 progressStatus.IncrementProcessed();
             }
+
+            // TODO: Show confirmation dialog
         }
     }
 }
-

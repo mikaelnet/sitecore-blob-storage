@@ -43,7 +43,7 @@ namespace Stendahls.Sc.BlobStorage
             var conStringName = database.ConnectionStringName;
             var conString = ConfigurationManager.ConnectionStrings[conStringName].ConnectionString;
 
-            var blobManager = (IBlobManager) ReflectionUtil.CreateObject(SqlServerWithExternalBlobDataProvider.BlobManagerType);
+            var blobManager = ReflectionUtil.CreateObject(BlobManagerHelper.BlobManagerType) as IBlobManager;
             blobManager.Initialize();
             var transferer = new BlobTransferer(conString, blobManager);
             var numberOfBlobs = transferer.GetNumberOfDatabaseBlobs();

@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BlobHelper.cs" />
     <Compile Include="DiskCachingBlobManager.cs" />
     <Compile Include="DiskCachingCleanupAgent.cs" />
     <Compile Include="IBlobManager.cs" />

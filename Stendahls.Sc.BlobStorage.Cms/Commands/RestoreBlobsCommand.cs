@@ -10,7 +10,7 @@ using Sitecore.Shell.Framework.Commands;
 using Sitecore.Web.UI.Sheer;
 using Stendahls.Sc.BlobStorage.Common;
 
-namespace Stendahls.Sc.BlobStorage
+namespace Stendahls.Sc.BlobStorage.Cms.Commands
 {
     public class RestoreBlobsCommand : Command
     {
