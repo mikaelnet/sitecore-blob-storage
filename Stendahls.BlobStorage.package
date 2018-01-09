@@ -22,7 +22,7 @@
         <x-item>/core/sitecore/content/Applications/Content Editor/Ribbons/Chunks/Blobs/{474CB135-3CA4-4A3E-9317-19C4A749E284}/invariant/0</x-item>
         <x-item>/core/sitecore/content/Applications/Content Editor/Ribbons/Chunks/Blobs/Send to Cloud/{2875C437-87F4-4363-A3F4-6EA4F0B4C6CB}/invariant/0</x-item>
         <x-item>/core/sitecore/content/Applications/Content Editor/Ribbons/Chunks/Blobs/Restore from Cloud/{78A2F8F7-554D-494D-87C0-0641E73EA36B}/invariant/0</x-item>
-        <x-item>/core/sitecore/content/Applications/Content Editor/Ribbons/Strips/Developer/{1756C7EE-5F3A-4F62-83E4-586F0BE185D1}/invariant/0</x-item>
+        <x-item>/core/sitecore/content/Applications/Content Editor/Ribbons/Strips/Developer/Blob storage/{65B2D62E-F0E8-4F89-95D6-C24540F48F91}/invariant/0</x-item>
       </Entries>
       <SkipVersions>False</SkipVersions>
       <Converter>
