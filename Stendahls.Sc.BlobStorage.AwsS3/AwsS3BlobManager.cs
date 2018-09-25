@@ -85,7 +85,7 @@ namespace Stendahls.Sc.BlobStorage.AwsS3
             }
             catch (AmazonS3Exception ex)
             {
-                Log.Error($"Can't download {GetObjectKey(blobId)} from {BucketName}", ex, this);
+                Log.Warn($"Can't download {GetObjectKey(blobId)} from {BucketName}. Using fallback.", ex, this);
                 return null;
             }
         }
