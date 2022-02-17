@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Amazon;
 using Amazon.Runtime;
 using Amazon.S3;
@@ -15,6 +16,8 @@ namespace Stendahls.Sc.BlobStorage.AwsS3
 {
     public class AwsS3BlobManager : DiskCachingBlobManager
     {
+        private const string ConnectionStringName = "BlobStorage.S3.Credentials";
+
         private static readonly LockSet BlobLockSet = new LockSet();
         public string BucketName { get; protected set; }
         public RegionEndpoint Region { get; protected set; }
@@ -25,23 +28,65 @@ namespace Stendahls.Sc.BlobStorage.AwsS3
         {
             base.Initialize();
 
+            // Security configuration moved to ConnectionStrings.config.
+            // However, we'll fallback on the old way of doing it.
             var bucketName = Settings.GetSetting("Stendahls.BlobStorage.AwsS3.BucketName");
-            if (string.IsNullOrWhiteSpace(bucketName))
-                throw new ConfigurationException("Stendahls.BlobStorage.AwsS3.BucketName is not defined in config");
-            BucketName = bucketName;
-
             var regionName = Settings.GetSetting("Stendahls.BlobStorage.AwsS3.Region");
-            if (string.IsNullOrWhiteSpace(regionName))
-                throw new ConfigurationException("Stendahls.BlobStorage.AwsS3.Region is not defined in config");
-            Region = RegionEndpoint.GetBySystemName(regionName);
 
             var accessKey = Settings.GetSetting("Stendahls.BlobStorage.AwsS3.AccessKey");
             var secretKey = Settings.GetSetting("Stendahls.BlobStorage.AwsS3.SecretKey");
-            if (string.IsNullOrWhiteSpace(accessKey) || string.IsNullOrWhiteSpace(secretKey))
-                throw new ConfigurationException("Stendahls.BlobStorage.AwsS3.AccessKey and/or Stendahls.BlobStorage.AwsS3.SecretKey is not defined in config");
-            Credentials = new BasicAWSCredentials(accessKey, secretKey);
+            var prefix = Settings.GetSetting("Stendahls.BlobStorage.AwsS3.Prefix");
 
-            BucketPrefix = Settings.GetSetting("Stendahls.BlobStorage.AwsS3.Prefix");
+            // Connection string should be written in the format:
+            // <add name="BlobStorage.S3.Credentials" connectionString="Bucket=xxx;Region=xxx;AccessKey=xxx;SecretKey=xxx;Prefix=xxx" />
+            if (Settings.ConnectionStringExists(ConnectionStringName))
+            {
+                var s3Connection = Settings.GetConnectionString(ConnectionStringName)
+                    .Split(';', ',', '&').Select(p =>
+                    {
+                        var param = p.Split('=');
+                        return new Tuple<string,string>(param[0], param[1]);
+                    }).ToDictionary(d => d.Item1, d => d.Item2, StringComparer.InvariantCultureIgnoreCase);
+
+                if (s3Connection.ContainsKey("Bucket"))
+                    bucketName = s3Connection["Bucket"];
+
+                if (s3Connection.ContainsKey("Region"))
+                    regionName = s3Connection["Region"];
+
+                if (s3Connection.ContainsKey("AccessKey"))
+                    accessKey = s3Connection["AccessKey"];
+                if (s3Connection.ContainsKey("SecretKey"))
+                    secretKey = s3Connection["SecretKey"];
+
+                if (s3Connection.ContainsKey("Prefix"))
+                    prefix = s3Connection["Prefix"];
+            }
+
+            if (string.IsNullOrWhiteSpace(accessKey) || string.IsNullOrWhiteSpace(secretKey))
+            {
+                Log.Info("Stendahls.BlobStorage.AwsS3.AccessKey and/or Stendahls.BlobStorage.AwsS3.SecretKey is not defined in config. Using EC2 machine role", "AwsS3BlobManager");
+                Credentials = null;
+            }
+            else
+            {
+                Credentials = new BasicAWSCredentials(accessKey, secretKey);
+            }
+
+            if (string.IsNullOrWhiteSpace(bucketName))
+                throw new ConfigurationException("Stendahls.BlobStorage.AwsS3.BucketName is not defined in config");
+
+            BucketName = bucketName;
+            Region = !string.IsNullOrWhiteSpace(regionName) ? RegionEndpoint.GetBySystemName(regionName) : null;
+            
+            BucketPrefix = prefix;
+        }
+
+        protected virtual AmazonS3Client GetS3Client()
+        {
+            if (Credentials == null)
+                return new AmazonS3Client();
+            return Region != null ? new AmazonS3Client(Credentials, Region) : new AmazonS3Client(Credentials);
         }
 
         protected static string GetObjectKey(Guid blobId)
@@ -65,7 +110,7 @@ namespace Stendahls.Sc.BlobStorage.AwsS3
             try
             {
                 Log.Info($"Downloading Blob {blobId:D} from Amazon S3", this);
-                var client = new AmazonS3Client(Credentials, Region);
+                var client = GetS3Client();
                 var response = client.GetObject(BucketName, GetObjectKey(blobId));
                 var memoryStream = new MemoryStream();
                 response.ResponseStream.CopyTo(memoryStream);
@@ -101,7 +146,7 @@ namespace Stendahls.Sc.BlobStorage.AwsS3
                     stream.CopyTo(memoryStream);
                     memoryStream.Seek(0, SeekOrigin.Begin);
 
-                    var client = new AmazonS3Client(Credentials, Region);
+                    var client = GetS3Client();
                     var request = new PutObjectRequest
                     {
                         BucketName = BucketName,
@@ -141,7 +186,7 @@ namespace Stendahls.Sc.BlobStorage.AwsS3
                 try
                 {
                     Log.Info($"Deleting Blob {blobId:D} from Amazon S3", this);
-                    var client = new AmazonS3Client(Credentials, Region);
+                    var client = GetS3Client();
                     client.DeleteObject(BucketName, GetObjectKey(blobId));
                 }
                 catch (AmazonS3Exception ex)
@@ -176,7 +221,7 @@ namespace Stendahls.Sc.BlobStorage.AwsS3
 
             try
             {
-                var client = new AmazonS3Client(Credentials, Region);
+                var client = GetS3Client();
                 var request = new GetObjectMetadataRequest()
                 {
                     BucketName = BucketName,
@@ -213,7 +258,7 @@ namespace Stendahls.Sc.BlobStorage.AwsS3
             int index = (BucketPrefix ?? string.Empty).Length;
             try
             {
-                var client = new AmazonS3Client(Credentials, Region);
+                var client = GetS3Client();
                 var request = new ListObjectsV2Request
                 {
                     BucketName = BucketName,
