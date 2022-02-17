@@ -1,0 +1,32 @@
+# OS junk files
+[Tt]humbs.db
+*.DS_Store
+
+.DotSettings
+*.orig
+
+# Visual Studio files
+*.user
+*.vspscc
+*.vssscc
+*.suo
+*.bak
+*.[Cc]ache
+*.ilk
+*.log
+*.unsuccessfulbuild
+*.[Oo]bj
+[Oo]bj/
+[Bb]in
+[Dd]ebug*/
+[Rr]elease*/
+user.config
+
+_ReSharper*/
+*.resharper
+
+# Project files
+**/packages/*
+**/node_modules/
+localGruntSettings.json
+**/.vs/*
